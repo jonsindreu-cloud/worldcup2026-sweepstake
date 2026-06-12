@@ -266,7 +266,7 @@ function renderMatches(allMatches) {
   const el = document.getElementById('matches-container');
 
   const sorted   = [...allMatches].sort((a, b) => (a.date > b.date ? 1 : -1));
-  const played   = sorted.filter(m => m.played).slice(-8);
+  const played   = sorted.filter(m => m.played).slice(-4);
   const upcoming = sorted.filter(m => !m.played).slice(0, 4);
   const toShow   = [...played, ...upcoming];
 
