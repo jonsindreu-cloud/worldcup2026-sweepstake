@@ -260,6 +260,11 @@ if (knockoutStarted && allGroupMatchesPlayed) {
   groupTeams.forEach(t => { if (!koTeams.has(t)) eliminatedTeams.add(t); });
 }
 
+console.log('[Elim] koTeams:', [...koTeams]);
+console.log('[Elim] eliminatedTeams:', [...eliminatedTeams]);
+console.log('[Elim] knockoutStarted:', knockoutStarted);
+console.log('[Elim] allGroupMatchesPlayed:', allGroupMatchesPlayed);
+
   return eliminatedTeams;
 }
 
