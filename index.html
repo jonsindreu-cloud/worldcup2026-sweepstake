@@ -247,14 +247,18 @@ function getEliminatedTeams(allMatches) {
     m => (m.roundType === 'r32' || m.roundType === 'r16') && m.played
   );
 
-  if (knockoutStarted) {
-    const groupTeams = new Set(
-      allMatches
-        .filter(m => m.roundType === 'group')
-        .flatMap(m => [normTeam(m.home), normTeam(m.away)])
-    );
-    groupTeams.forEach(t => { if (!koTeams.has(t)) eliminatedTeams.add(t); });
-  }
+  const allGroupMatchesPlayed = allMatches
+  .filter(m => m.roundType === 'group')
+  .every(m => m.played);
+
+if (knockoutStarted && allGroupMatchesPlayed) {
+  const groupTeams = new Set(
+    allMatches
+      .filter(m => m.roundType === 'group')
+      .flatMap(m => [normTeam(m.home), normTeam(m.away)])
+  );
+  groupTeams.forEach(t => { if (!koTeams.has(t)) eliminatedTeams.add(t); });
+}
 
   return eliminatedTeams;
 }
