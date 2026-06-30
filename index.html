@@ -314,7 +314,11 @@ function renderLeaderboard(allMatches) {
 
   noP.style.display = 'none';
 
-  const eliminatedTeams = getEliminatedTeams(allMatches);
+  const eliminatedTeams = new Set(
+  PARTICIPANTS
+    .filter(p => p.eliminated === true || p.eliminated === 'TRUE')
+    .flatMap(p => (p.teams || []).map(normTeam))
+  );
   const shared          = sharedTeams(PARTICIPANTS);
 
   const gbWinner = GOLDEN_BOOT_RESULT.winner ? normTeam(GOLDEN_BOOT_RESULT.winner) : null;
