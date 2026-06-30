@@ -225,14 +225,10 @@ function getKoWinner(m) {
 // ============================================================
 function getEliminatedTeams(allMatches) {
   const eliminatedTeams = new Set();
-  const koRounds = ['r32','r16','qf','sf','3rd','final'];
+  const koRounds = ['r32', 'r16', 'qf', 'sf', '3rd', 'final'];
+  const groupRounds = ['group'];
 
-  const koTeams = new Set(
-    allMatches
-      .filter(m => koRounds.includes(m.roundType) && m.played)
-      .flatMap(m => [normTeam(m.home), normTeam(m.away)])
-  );
-
+  // Step 1: Mark losers of played KO matches as eliminated
   allMatches
     .filter(m => koRounds.includes(m.roundType) && m.played)
     .forEach(m => {
@@ -243,27 +239,26 @@ function getEliminatedTeams(allMatches) {
       eliminatedTeams.add(winner === normHome ? normAway : normHome);
     });
 
-  const knockoutStarted = allMatches.some(
-    m => (m.roundType === 'r32' || m.roundType === 'r16') && m.played
-  );
+  // Step 2: If the group stage is fully complete, mark all teams that
+  // didn't appear in any KO match as eliminated
+  const groupMatches = allMatches.filter(m => groupRounds.includes(m.roundType));
+  const allGroupPlayed = groupMatches.length > 0 && groupMatches.every(m => m.played);
 
-  const allGroupMatchesPlayed = allMatches
-  .filter(m => m.roundType === 'group')
-  .every(m => m.played);
+  if (allGroupPlayed) {
+    const koTeams = new Set(
+  allMatches
+    .filter(m => koRounds.includes(m.roundType)) // no m.played filter
+    .flatMap(m => [normTeam(m.home), normTeam(m.away)])
+);
+    );
 
-if (knockoutStarted && allGroupMatchesPlayed) {
-  const groupTeams = new Set(
-    allMatches
-      .filter(m => m.roundType === 'group')
-      .flatMap(m => [normTeam(m.home), normTeam(m.away)])
-  );
-  groupTeams.forEach(t => { if (!koTeams.has(t)) eliminatedTeams.add(t); });
-}
-
-console.log('[Elim] koTeams:', [...koTeams]);
-console.log('[Elim] eliminatedTeams:', [...eliminatedTeams]);
-console.log('[Elim] knockoutStarted:', knockoutStarted);
-console.log('[Elim] allGroupMatchesPlayed:', allGroupMatchesPlayed);
+    groupMatches.forEach(m => {
+      const normHome = normTeam(m.home);
+      const normAway = normTeam(m.away);
+      if (!koTeams.has(normHome)) eliminatedTeams.add(normHome);
+      if (!koTeams.has(normAway)) eliminatedTeams.add(normAway);
+    });
+  }
 
   return eliminatedTeams;
 }
