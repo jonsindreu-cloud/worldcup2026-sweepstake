@@ -2,417 +2,284 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>⚽ World Cup 2026 Breakingviews Sweepstake Leaderboard</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: #0a0e1a;
-      color: #e0e0e0;
+      background: #0a1628;
+      color: #e8eaf6;
       min-height: 100vh;
-      padding: 24px 16px;
     }
-
-    header { text-align: center; margin-bottom: 32px; }
-    header h1 { font-size: 2rem; color: #FFD700; letter-spacing: 1px; }
-    header p  { color: #aaa; font-size: 0.9rem; margin-top: 6px; }
-    #last-updated { color: #66bb6a; font-size: 0.8rem; margin-top: 4px; }
-
-    .container { max-width: 960px; margin: 0 auto; }
-
-    .section-title {
-      font-size: 1rem; color: #FFD700; text-transform: uppercase;
-      letter-spacing: 1px; margin-bottom: 12px;
-      border-left: 3px solid #FFD700; padding-left: 10px;
+    header {
+      background: linear-gradient(135deg, #1a237e, #283593);
+      padding: 24px;
+      text-align: center;
+      border-bottom: 3px solid #ffd700;
     }
+    header h1 { font-size: 2rem; color: #ffd700; }
+    header p  { color: #90caf9; margin-top: 6px; font-size: 0.95rem; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 24px 16px; }
 
-    table {
-      width: 100%; border-collapse: collapse; background: #12182b;
-      border-radius: 12px; overflow: hidden;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.4); margin-bottom: 40px;
-    }
-
-    thead { background: #1a2340; }
-
-    th {
-      padding: 14px 16px; text-align: left; font-size: 0.8rem;
-      text-transform: uppercase; letter-spacing: 1px; color: #FFD700;
-    }
-
-    td {
-      padding: 14px 16px; border-top: 1px solid #1e2a45;
-      font-size: 0.95rem; vertical-align: middle;
-    }
-
-    tr:hover td { background: #1a2340; }
-    tr.eliminated td { opacity: 0.45; }
-
-    .rank { font-weight: bold; color: #aaa; width: 40px; }
-    .rank.gold   { color: #FFD700; font-size: 1.2rem; }
-    .rank.silver { color: #C0C0C0; font-size: 1.1rem; }
-    .rank.bronze { color: #CD7F32; font-size: 1.1rem; }
-
-    .participant-name { font-weight: 600; color: #fff; }
-    .participant-name.eliminated-name { text-decoration: line-through; color: #888; }
-
-    .eliminated-badge {
-      display: inline-block; background: #3b1a1a; color: #f87171;
-      border-radius: 4px; padding: 2px 6px; font-size: 0.72rem;
-      margin-left: 6px; vertical-align: middle;
-    }
-
-    .team-tag {
-      display: inline-block; background: #1a2340; border-radius: 4px;
-      padding: 2px 7px; margin: 2px; font-size: 0.78rem; color: #ccc;
-    }
-    .team-tag.shared { border: 1px solid #FFD70055; color: #FFD700; }
-    .team-tag.elim   { text-decoration: line-through; color: #555; }
-
-    .points-total {
-      font-weight: bold; font-size: 1.15rem; color: #FFD700;
-      text-align: right; white-space: nowrap;
-    }
-    .points-breakdown { font-size: 0.72rem; color: #888; text-align: right; white-space: nowrap; }
-
-    .golden-boot-pick { font-size: 0.82rem; color: #81d4fa; }
-    .golden-boot-bonus {
-      display: inline-block; background: #1b3a1b; color: #66bb6a;
-      border-radius: 4px; padding: 2px 6px; font-size: 0.75rem; margin-left: 4px;
-    }
-
-    #live-matches { margin-bottom: 40px; }
-
+    /* ── Matches panel ── */
+    .matches-section { margin-bottom: 32px; }
+    .matches-section h2 { color: #ffd700; margin-bottom: 12px; font-size: 1.2rem; }
     .match-card {
-      background: #12182b; border-radius: 8px; padding: 12px 16px;
-      margin-bottom: 8px; display: flex; align-items: center;
-      gap: 10px; font-size: 0.9rem;
+      background: #1a2744;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
     }
-    .match-home { flex: 1; color: #ccc; }
-    .match-away { flex: 1; text-align: right; color: #ccc; }
-    .match-score {
-      font-weight: bold; font-size: 1.1rem; color: #FFD700;
-      min-width: 80px; text-align: center;
+    .match-card.live   { border-left: 4px solid #f44336; }
+    .match-card.played { border-left: 4px solid #4caf50; }
+    .match-card.upcoming { border-left: 4px solid #90caf9; opacity: 0.7; }
+    .round-label {
+      font-size: 0.72rem;
+      background: #283593;
+      color: #90caf9;
+      padding: 2px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
     }
-    .match-score-sub { display: block; font-size: 0.68rem; color: #81d4fa; font-weight: normal; margin-top: 2px; }
-    .match-meta { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; min-width: 100px; }
-    .match-status { font-size: 0.72rem; padding: 3px 8px; border-radius: 12px; background: #1e2a45; color: #aaa; }
-    .match-type { font-size: 0.72rem; color: #555; }
+    .match-teams { flex: 1; font-size: 0.95rem; }
+    .match-score { font-weight: bold; color: #ffd700; font-size: 1rem; min-width: 40px; text-align: center; }
+    .match-date  { font-size: 0.78rem; color: #78909c; white-space: nowrap; }
+    .live-badge  {
+      background: #f44336; color: #fff;
+      font-size: 0.68rem; font-weight: bold;
+      padding: 2px 6px; border-radius: 4px;
+      animation: pulse 1.2s infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
 
-    .shared-legend { font-size: 0.78rem; color: #888; margin-bottom: 12px; padding-left: 4px; }
-    .shared-legend span {
-      display: inline-block; width: 10px; height: 10px;
-      border: 1px solid #FFD700; border-radius: 2px; margin-right: 5px; vertical-align: middle;
+    /* ── Leaderboard ── */
+    .leaderboard-section h2 { color: #ffd700; margin-bottom: 12px; font-size: 1.2rem; }
+    .leaderboard-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
     }
-
-    #error-banner {
-      display: none; background: #3b1a1a; color: #f87171;
-      border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 0.85rem;
+    .leaderboard-table th {
+      background: #1a237e;
+      color: #ffd700;
+      padding: 10px 12px;
+      text-align: left;
     }
-
-    #no-participants {
-      display: none; background: #1a2340; color: #aaa;
-      border-radius: 8px; padding: 16px; margin-bottom: 20px;
-      font-size: 0.9rem; text-align: center;
+    .leaderboard-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #1e2d4a;
     }
+    .leaderboard-table tr:nth-child(even) td { background: #152035; }
+    .leaderboard-table tr.eliminated td     { opacity: 0.45; text-decoration: line-through; }
+    .leaderboard-table tr.leader td         { background: #1b3a1b; }
+    .rank-medal { font-size: 1.2rem; }
+    .team-chip {
+      display: inline-block;
+      background: #1a237e;
+      border-radius: 4px;
+      padding: 2px 7px;
+      margin: 2px;
+      font-size: 0.8rem;
+    }
+    .team-chip.shared { outline: 2px solid #ffd700; }
+    .score-total { font-weight: bold; color: #ffd700; font-size: 1.05rem; }
+    .score-breakdown { font-size: 0.75rem; color: #78909c; }
 
-    footer { text-align: center; color: #444; font-size: 0.8rem; margin-top: 40px; padding-bottom: 24px; }
+    footer {
+      text-align: center;
+      padding: 20px;
+      color: #546e7a;
+      font-size: 0.8rem;
+      border-top: 1px solid #1e2d4a;
+      margin-top: 32px;
+    }
   </style>
 </head>
 <body>
+
+<header>
+  <h1>⚽ World Cup 2026 Breakingviews Sweepstake</h1>
+  <p>Each participant picked their own 3 teams. Scores update every 5 minutes.</p>
+</header>
+
 <div class="container">
-  <header>
-    <h1>⚽ World Cup 2026 Breakingviews Sweepstake</h1>
-    <p>Each participant picked their own 3 teams. Scores update every 5 minutes.</p>
-    <p id="last-updated">Loading...</p>
-  </header>
 
-  <div id="error-banner"></div>
-  <div id="no-participants">No entries yet — share the Google Form link to get people signed up! 📋</div>
-
-  <div id="live-matches">
-    <div class="section-title">🔴 Recent &amp; Live Matches</div>
-    <div id="matches-container"><p style="color:#666;padding:12px">Fetching matches...</p></div>
+  <div class="matches-section">
+    <h2>🔴 Recent &amp; Live Matches</h2>
+    <div id="matches-container">Fetching matches...</div>
   </div>
 
-  <div>
-    <div class="section-title">🏆 Leaderboard</div>
-    <p class="shared-legend"><span></span> Gold-outlined team = picked by more than one participant</p>
-    <div id="leaderboard-container"><p style="color:#666;padding:12px">Loading scores...</p></div>
+  <div class="leaderboard-section">
+    <h2>🏆 Leaderboard</h2>
+    <p style="font-size:0.78rem;color:#78909c;margin-bottom:10px;">
+      Gold-outlined team = picked by more than one participant
+    </p>
+    <div id="leaderboard-container">Loading scores...</div>
   </div>
+
 </div>
 
 <footer>
-  <p>Live data via football-data.org &nbsp;·&nbsp; Participants via Google Forms &nbsp;·&nbsp; Built for the office sweepstake 🏆</p>
+  Live data via football-data.org · Participants via Google Forms · Built for the office sweepstake 🏆
 </footer>
 
 <script>
-// ============================================================
-//  ⚙️  CONFIGURATION
-// ============================================================
+  // ── Config ───────────────────────────────────────────────────
+  const GAS_URL = 'https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec';
 
-// Single URL for everything — participants, scores, and match data
-// are all proxied through the Apps Script backend to avoid CORS.
-const RESPONSES_URL = 'https://script.google.com/macros/s/AKfycbxBmA8F3lWusvOR3uOU7XhNhKmZygFHBdtrbsQlS9dM9VFYWpQBJU1cII3t5petLN0EdQ/exec';
+  const POINTS = {
+    groupWin:             3,
+    groupDraw:            1,
+    qualifyAsGroupWinner: 5,
+    qualifyAsRunnerUp:    3,
+    qualifyAsBest3rd:     2,
+    roundOf32Win:         5,
+    roundOf16Win:         8,
+    quarterFinalWin:      12,
+    semiFinalWin:         16,
+    thirdPlaceWin:        10,
+    finalWin:             25
+  };
 
-const GOLDEN_BOOT_RESULT = { winner: null, top3Scorers: [] };
+  // ← FIX 1a: map internal roundType keys to human-readable labels
+  const ROUND_LABELS = {
+    group:   'Group Stage',
+    r32:     'Round of 32',
+    r16:     'Round of 16',
+    qf:      'Quarter-Final',
+    sf:      'Semi-Final',
+    '3rd':   'Third Place',
+    final:   'Final',
+    unknown: 'Unknown'
+  };
 
-let PARTICIPANTS = [];
-
-const STAGE_LABEL = {
-  group: 'Group Stage', r32: 'Round of 32', r16: 'Round of 16',
-  qf: 'Quarter-Final',  sf: 'Semi-Final',   '3rd': '3rd Place', final: '⭐ Final'
-};
-
-// ============================================================
-//  🔧  HELPERS
-// ============================================================
-function norm(s) {
-  return (s || '').toString().trim().toLowerCase();
-}
-
-const TEAM_NAME_ALIASES = {
-  "ivory coast":                  "ivory coast",
-  "côte d'ivoire":                "ivory coast",
-  "cote d'ivoire":                "ivory coast",
-  "usa":                          "usa",
-  "united states":                "usa",
-  "united states of america":     "usa",
-  "dr congo":                     "dr congo",
-  "democratic republic of congo": "dr congo",
-  "congo, dr":                    "dr congo",
-  "bosnia":                       "bosnia-herzegovina",
-  "bosnia herzegovina":           "bosnia-herzegovina",
-  "bosnia & herzegovina":         "bosnia-herzegovina",
-  "bosnia-herzegovina":           "bosnia-herzegovina",
-  "south korea":                  "south korea",
-  "korea republic":               "south korea",
-  "czechia":                      "czechia",
-  "czech republic":               "czechia",
-  "cape verde":                   "cape verde",
-  "cabo verde":                   "cape verde",
-  "curaçao":                      "curacao",
-  "curacao":                      "curacao",
-  "ir iran":                      "iran",
-  "türkiye":                      "turkey"
-};
-
-function normTeam(s) {
-  const n = norm(s);
-  return TEAM_NAME_ALIASES[n] || n;
-}
-
-function sharedTeams(participants) {
-  const count = {};
-  participants.forEach(p => (p.teams || []).forEach(t => {
-    const k = normTeam(t);
-    count[k] = (count[k] || 0) + 1;
-  }));
-  return new Set(Object.keys(count).filter(k => count[k] > 1));
-}
-
-function getKoWinner(m) {
-  const s1 = m.score1p ?? m.score1et ?? m.score1;
-  const s2 = m.score2p ?? m.score2et ?? m.score2;
-  if (s1 > s2) return normTeam(m.home);
-  if (s2 > s1) return normTeam(m.away);
-  return null;
-}
-
-// ============================================================
-//  🗑️  ELIMINATED TEAMS (for team tag strikethrough display)
-// ============================================================
-function getEliminatedTeams(allMatches) {
-  const eliminatedTeams = new Set();
-  const koRounds = ['r32','r16','qf','sf','3rd','final'];
-
-  const koTeams = new Set(
-    allMatches
-      .filter(m => koRounds.includes(m.roundType) && m.played)
-      .flatMap(m => [normTeam(m.home), normTeam(m.away)])
-  );
-
-  allMatches
-    .filter(m => koRounds.includes(m.roundType) && m.played)
-    .forEach(m => {
-      const winner = getKoWinner(m);
-      if (!winner) return;
-      const normHome = normTeam(m.home);
-      const normAway = normTeam(m.away);
-      eliminatedTeams.add(winner === normHome ? normAway : normHome);
-    });
-
-  const knockoutStarted = allMatches.some(
-    m => (m.roundType === 'r32' || m.roundType === 'r16') && m.played
-  );
-
-  if (knockoutStarted) {
-    const groupTeams = new Set(
-      allMatches
-        .filter(m => m.roundType === 'group')
-        .flatMap(m => [normTeam(m.home), normTeam(m.away)])
-    );
-    groupTeams.forEach(t => { if (!koTeams.has(t)) eliminatedTeams.add(t); });
+  // ── Fetch data from GAS ──────────────────────────────────────
+  async function fetchData() {
+    const res  = await fetch(GAS_URL);
+    const data = await res.json();
+    return data;
   }
 
-  return eliminatedTeams;
-}
-
-// ============================================================
-//  🎨  RENDER: MATCHES
-// ============================================================
-function renderMatches(allMatches) {
-  const el = document.getElementById('matches-container');
-
-  const sorted   = [...allMatches].sort((a, b) => (a.date > b.date ? 1 : -1));
-  const played   = sorted.filter(m => m.played).slice(-4);
-  const upcoming = sorted.filter(m => !m.played).slice(0, 4);
-  const toShow   = [...played, ...upcoming];
-
-  if (!toShow.length) {
-    el.innerHTML = '<p style="color:#666;padding:12px">No matches to display yet. ⚽</p>';
-    return;
-  }
-
-  el.innerHTML = toShow.map(m => {
-    let scoreStr = 'vs';
-    let scoreSub = '';
-    if (m.played) {
-      scoreStr = `${m.score1} – ${m.score2}`;
-      if (m.score1p !== null && m.score2p !== null) {
-        scoreSub = `<span class="match-score-sub">(${m.score1p}–${m.score2p} pens)</span>`;
-      } else if (m.score1et !== null && m.score2et !== null) {
-        scoreSub = `<span class="match-score-sub">(${m.score1et}–${m.score2et} AET)</span>`;
-      }
+  // ── Render matches ───────────────────────────────────────────
+  function renderMatches(matches) {
+    const container = document.getElementById('matches-container');
+    if (!matches || matches.length === 0) {
+      container.innerHTML = '<p style="color:#78909c">No match data available.</p>';
+      return;
     }
 
-    return `<div class="match-card">
-      <div class="match-home">${m.home}</div>
-      <div class="match-score">${scoreStr}${scoreSub}</div>
-      <div class="match-away">${m.away}</div>
-      <div class="match-meta">
-        <span class="match-status">${m.played ? 'FT' : 'Upcoming'}</span>
-        <span class="match-type">${STAGE_LABEL[m.roundType] || m.roundType}</span>
-      </div>
-    </div>`;
-  }).join('');
-}
+    // Show the 20 most recent/live matches, newest first
+    const relevant = [...matches]
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .slice(0, 20);
 
-// ============================================================
-//  🎨  RENDER: LEADERBOARD
-// ============================================================
-function renderLeaderboard(allMatches) {
-  const el  = document.getElementById('leaderboard-container');
-  const noP = document.getElementById('no-participants');
+    container.innerHTML = relevant.map(m => {
+      const isLive    = m.status === 'IN_PLAY' || m.status === 'PAUSED' || m.status === 'HALFTIME';
+      const isPlayed  = m.played;
+      const cardClass = isLive ? 'live' : isPlayed ? 'played' : 'upcoming';
 
-  if (!PARTICIPANTS.length) {
-    noP.style.display = 'block';
-    el.innerHTML = '';
-    return;
+      const scoreStr  = isPlayed || isLive
+        ? `${m.score1 ?? '?'} – ${m.score2 ?? '?'}`
+        : 'vs';
+
+      const dateStr   = m.date
+        ? new Date(m.date).toLocaleString('en-GB', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
+        : '';
+
+      // ← FIX 1b: use ROUND_LABELS to display a human-readable stage name
+      const roundLabel = ROUND_LABELS[m.roundType] || m.roundType;
+
+      return `
+        <div class="match-card ${cardClass}">
+          <span class="round-label">${roundLabel}</span>
+          ${isLive ? '<span class="live-badge">LIVE</span>' : ''}
+          <span class="match-teams">${m.home} <strong>${scoreStr}</strong> ${m.away}</span>
+          <span class="match-date">${dateStr}</span>
+        </div>`;
+    }).join('');
   }
 
-  noP.style.display = 'none';
+  // ── Render leaderboard ───────────────────────────────────────
+  function renderLeaderboard(participants) {
+    const container = document.getElementById('leaderboard-container');
+    if (!participants || participants.length === 0) {
+      container.innerHTML = `<p style="color:#78909c">No entries yet — share the Google Form link to get people signed up! 📋</p>`;
+      return;
+    }
 
-  const eliminatedTeams = getEliminatedTeams(allMatches);
-  const shared          = sharedTeams(PARTICIPANTS);
+    // Count how many participants share each team (for gold outline)
+    const teamCounts = {};
+    participants.forEach(p => {
+      (p.teams || []).forEach(t => {
+        const key = t.toLowerCase();
+        teamCounts[key] = (teamCounts[key] || 0) + 1;
+      });
+    });
 
-  const gbWinner = GOLDEN_BOOT_RESULT.winner ? normTeam(GOLDEN_BOOT_RESULT.winner) : null;
-  const gbTop3   = GOLDEN_BOOT_RESULT.top3Scorers.map(normTeam);
+    const sorted = [...participants].sort((a, b) => (b.scores?.total ?? 0) - (a.scores?.total ?? 0));
+    const medals = ['🥇', '🥈', '🥉'];
 
-  const ranked = [...PARTICIPANTS].sort((a, b) => {
-    const aTotal = (a.scores && a.scores.total) || 0;
-    const bTotal = (b.scores && b.scores.total) || 0;
-    return bTotal - aTotal;
-  });
+    const rows = sorted.map((p, i) => {
+      const s         = p.scores || { group: 0, qualifier: 0, ko: 0, boot: 0, total: 0 };
+      const isElim    = p.eliminated;
+      const isLeader  = i === 0;
+      const rowClass  = isElim ? 'eliminated' : isLeader ? 'leader' : '';
+      const rankCell  = medals[i] ? `<span class="rank-medal">${medals[i]}</span>` : `${i + 1}.`;
 
-  const rankSymbol = i => ['🥇','🥈','🥉'][i] || `${i + 1}`;
-  const rankClass  = i => ['gold','silver','bronze'][i] || '';
+      const teamChips = (p.teams || []).map(t => {
+        const shared = (teamCounts[t.toLowerCase()] || 0) > 1;
+        return `<span class="team-chip ${shared ? 'shared' : ''}">${t}</span>`;
+      }).join('');
 
-  const rows = ranked.map((p, i) => {
-    const scores       = p.scores || { group: 0, qualifier: 0, ko: 0, boot: 0, total: 0 };
-    const isEliminated = p.eliminated === true || p.eliminated === 'TRUE';
-
-    const teamTags = (p.teams || []).map(t => {
-      const isTeamElim = eliminatedTeams.has(normTeam(t));
-      const classes    = ['team-tag', shared.has(normTeam(t)) ? 'shared' : '', isTeamElim ? 'elim' : ''].filter(Boolean).join(' ');
-      return `<span class="${classes}">${t}</span>`;
+      return `
+        <tr class="${rowClass}">
+          <td>${rankCell}</td>
+          <td>${p.name}${isElim ? ' ☠️' : ''}</td>
+          <td>${teamChips}</td>
+          <td>
+            <span class="score-total">${s.total}</span>
+            <br>
+            <span class="score-breakdown">
+              G:${s.group} Q:${s.qualifier} KO:${s.ko} Boot:${s.boot ?? 0}
+            </span>
+          </td>
+        </tr>`;
     }).join('');
 
-    const pick = p.goldenBoot || '—';
-    let badge = '';
-    if (gbWinner && normTeam(pick) === gbWinner) badge = '<span class="golden-boot-bonus">+10 ✅</span>';
-    else if (gbTop3.includes(normTeam(pick)))    badge = '<span class="golden-boot-bonus">+5 🎯</span>';
-
-    const nameClass = isEliminated ? 'participant-name eliminated-name' : 'participant-name';
-    const elimBadge = isEliminated ? '<span class="eliminated-badge">☠️ Eliminated</span>' : '';
-    const rowClass  = isEliminated ? 'eliminated' : '';
-
-    return `<tr class="${rowClass}">
-      <td class="rank ${rankClass(i)}">${rankSymbol(i)}</td>
-      <td class="${nameClass}">${p.name}${elimBadge}</td>
-      <td>${teamTags}</td>
-      <td class="golden-boot-pick">${pick}${badge}</td>
-      <td>
-        <div class="points-total">${scores.total} pts</div>
-        <div class="points-breakdown">Group ${scores.group} · Qualify ${scores.qualifier} · KO ${scores.ko} · Boot ${scores.boot}</div>
-      </td>
-    </tr>`;
-  }).join('');
-
-  el.innerHTML = `<table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Participant</th>
-        <th>Teams</th>
-        <th>🥅 Golden Boot Pick</th>
-        <th style="text-align:right">Points</th>
-      </tr>
-    </thead>
-    <tbody>${rows}</tbody>
-  </table>`;
-}
-
-// ============================================================
-//  🔄  MAIN REFRESH LOOP
-// ============================================================
-async function refresh() {
-  const banner = document.getElementById('error-banner');
-
-  try {
-    // Single fetch — Apps Script returns { participants, matches }
-    const res = await fetch(`${RESPONSES_URL}?t=${Date.now()}`);
-
-    if (!res.ok) throw new Error(`Server error (HTTP ${res.status})`);
-
-    const payload = await res.json();
-
-    if (payload.error) throw new Error(`Backend error: ${payload.error}`);
-
-    PARTICIPANTS   = payload.participants || [];
-    const allMatches = payload.matches    || [];
-
-    console.log(`[Sweepstake] ${PARTICIPANTS.length} participants, ${allMatches.length} matches loaded`);
-
-    banner.style.display = 'none';
-    renderMatches(allMatches);
-    renderLeaderboard(allMatches);
-
-    document.getElementById('last-updated').textContent =
-      `Last updated: ${new Date().toLocaleTimeString()} · ${PARTICIPANTS.length} participant${PARTICIPANTS.length !== 1 ? 's' : ''}`;
-
-  } catch (e) {
-    console.error('[Sweepstake] Error:', e);
-    banner.style.display = 'block';
-    banner.textContent = `⚠️ ${e.message}. Retrying in 5 minutes...`;
-    document.getElementById('last-updated').textContent =
-      `Last attempt: ${new Date().toLocaleTimeString()}`;
+    container.innerHTML = `
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Teams</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>${rows}</tbody>
+      </table>`;
   }
-}
 
-refresh();
-setInterval(refresh, 5 * 60 * 1000);
+  // ── Init ─────────────────────────────────────────────────────
+  async function init() {
+    try {
+      const data = await fetchData();
+      renderMatches(data.matches || []);
+      renderLeaderboard(data.participants || []);
+    } catch (e) {
+      document.getElementById('matches-container').innerHTML =
+        `<p style="color:#f44336">Error loading data: ${e.message}</p>`;
+    }
+  }
+
+  init();
+  setInterval(init, 5 * 60 * 1000); // refresh every 5 minutes
 </script>
+
 </body>
 </html>
