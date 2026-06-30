@@ -227,11 +227,7 @@ function getEliminatedTeams(allMatches) {
   const eliminatedTeams = new Set();
   const koRounds = ['r32','r16','qf','sf','3rd','final'];
 
-  const koTeams = new Set(
-    allMatches
-      .filter(m => koRounds.includes(m.roundType) && m.played)
-      .flatMap(m => [normTeam(m.home), normTeam(m.away)])
-  );
+  const eliminatedTeams = getEliminatedTeams(allMatches);
 
   allMatches
     .filter(m => koRounds.includes(m.roundType) && m.played)
