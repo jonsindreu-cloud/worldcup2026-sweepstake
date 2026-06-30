@@ -399,6 +399,9 @@ async function refresh() {
 
     console.log(`[Sweepstake] ${PARTICIPANTS.length} participants, ${allMatches.length} matches loaded`);
 
+   // ADD THIS:
+    console.log('[Sweepstake] eliminated check:', PARTICIPANTS.map(p => ({ name: p.name, eliminated: p.eliminated })));
+
     banner.style.display = 'none';
     renderMatches(allMatches);
     renderLeaderboard(allMatches);
