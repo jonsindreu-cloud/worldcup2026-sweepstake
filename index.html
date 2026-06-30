@@ -227,7 +227,11 @@ function getEliminatedTeams(allMatches) {
   const eliminatedTeams = new Set();
   const koRounds = ['r32','r16','qf','sf','3rd','final'];
 
-  const eliminatedTeams = getEliminatedTeams(allMatches);
+  const koTeams = new Set(
+    allMatches
+      .filter(m => koRounds.includes(m.roundType) && m.played)
+      .flatMap(m => [normTeam(m.home), normTeam(m.away)])
+  );
 
   allMatches
     .filter(m => koRounds.includes(m.roundType) && m.played)
@@ -310,11 +314,8 @@ function renderLeaderboard(allMatches) {
 
   noP.style.display = 'none';
 
-  const eliminatedTeams = new Set(
-  PARTICIPANTS
-    .filter(p => p.eliminated === true || p.eliminated === 'TRUE')
-    .flatMap(p => (p.teams || []).map(normTeam))
-  );
+  const eliminatedTeams = getEliminatedTeams(allMatches);
+
   const shared          = sharedTeams(PARTICIPANTS);
 
   const gbWinner = GOLDEN_BOOT_RESULT.winner ? normTeam(GOLDEN_BOOT_RESULT.winner) : null;
