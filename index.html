@@ -249,7 +249,6 @@ function getEliminatedTeams(allMatches) {
   allMatches
     .filter(m => koRounds.includes(m.roundType)) // no m.played filter
     .flatMap(m => [normTeam(m.home), normTeam(m.away)])
-);
     );
 
     groupMatches.forEach(m => {
